@@ -684,6 +684,7 @@ QPushButton:hover{
 
 QHeaderView::section{
 	border: none;
+	background-color: rgb(211, 215, 207);
 }</string>
     </property>
     <property name="frameShape">
@@ -734,29 +735,17 @@ QHeaderView::section{
     <property name="cornerButtonEnabled">
      <bool>false</bool>
     </property>
-    <property name="rowCount">
-     <number>0</number>
-    </property>
-    <attribute name="horizontalHeaderVisible">
-     <bool>false</bool>
-    </attribute>
     <attribute name="horizontalHeaderCascadingSectionResizes">
-     <bool>false</bool>
+     <bool>true</bool>
     </attribute>
-    <attribute name="horizontalHeaderDefaultSectionSize">
+    <attribute name="horizontalHeaderMinimumSectionSize">
      <number>100</number>
-    </attribute>
-    <attribute name="horizontalHeaderHighlightSections">
-     <bool>true</bool>
-    </attribute>
-    <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
-     <bool>true</bool>
-    </attribute>
-    <attribute name="horizontalHeaderStretchLastSection">
-     <bool>false</bool>
     </attribute>
     <attribute name="verticalHeaderVisible">
      <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderMinimumSectionSize">
+     <number>0</number>
     </attribute>
     <attribute name="verticalHeaderDefaultSectionSize">
      <number>40</number>
@@ -895,19 +884,19 @@ QPushButton:disabled{
      <x>80</x>
      <y>360</y>
      <width>251</width>
-     <height>90</height>
+     <height>70</height>
     </rect>
    </property>
    <property name="minimumSize">
     <size>
      <width>251</width>
-     <height>90</height>
+     <height>70</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
      <width>251</width>
-     <height>90</height>
+     <height>70</height>
     </size>
    </property>
    <property name="cursor">
@@ -919,16 +908,11 @@ QPushButton:disabled{
    <property name="styleSheet">
     <string notr="true">QLabel{
 	color: #FFFFFF;
+	selection-color: rgb(0, 120, 212);
 }</string>
-   </property>
-   <property name="inputMethodHints">
-    <set>Qt::ImhNone</set>
    </property>
    <property name="text">
     <string/>
-   </property>
-   <property name="scaledContents">
-    <bool>false</bool>
    </property>
    <property name="alignment">
     <set>Qt::AlignHCenter|Qt::AlignTop</set>
@@ -937,7 +921,7 @@ QPushButton:disabled{
     <bool>true</bool>
    </property>
    <property name="textInteractionFlags">
-    <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+    <set>Qt::TextSelectableByMouse</set>
    </property>
   </widget>
   <widget class="QLabel" name="drive_name_label">
@@ -946,19 +930,19 @@ QPushButton:disabled{
      <x>380</x>
      <y>360</y>
      <width>251</width>
-     <height>90</height>
+     <height>70</height>
     </rect>
    </property>
    <property name="minimumSize">
     <size>
      <width>251</width>
-     <height>90</height>
+     <height>70</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
      <width>251</width>
-     <height>90</height>
+     <height>70</height>
     </size>
    </property>
    <property name="cursor">
@@ -972,6 +956,9 @@ QPushButton:disabled{
 	color: #FFFFFF;
 }</string>
    </property>
+   <property name="text">
+    <string/>
+   </property>
    <property name="alignment">
     <set>Qt::AlignHCenter|Qt::AlignTop</set>
    </property>
@@ -980,6 +967,96 @@ QPushButton:disabled{
    </property>
    <property name="textInteractionFlags">
     <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="remove_file_button">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>422</y>
+     <width>110</width>
+     <height>35</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>110</width>
+     <height>35</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>110</width>
+     <height>35</height>
+    </size>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+	border: none;
+	font-size: 20px;
+	background: none;
+	color: rgb(0, 120, 212);
+	text-decoration: underline;
+}
+
+QPushButton:hover{
+	color: rgb(1, 93, 163);
+}
+
+QPushButton:pressed{
+	color: rgb(0, 144, 255);
+}</string>
+   </property>
+   <property name="text">
+    <string>Remove</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="change_drive_button">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>422</y>
+     <width>110</width>
+     <height>35</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>110</width>
+     <height>35</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>110</width>
+     <height>35</height>
+    </size>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+	border: none;
+	font-size: 20px;
+	background: none;
+	color: rgb(0, 120, 212);
+	text-decoration: underline;
+}
+
+QPushButton:hover{
+	color: rgb(1, 93, 163);
+}
+
+QPushButton:pressed{
+	color: rgb(0, 144, 255);
+}</string>
+   </property>
+   <property name="text">
+    <string>Change</string>
    </property>
   </widget>
   <zorder>drive_name_label</zorder>
@@ -993,8 +1070,10 @@ QPushButton:disabled{
   <zorder>add_button</zorder>
   <zorder>instruction_label_second</zorder>
   <zorder>logo_label</zorder>
-  <zorder>instruction_label_first</zorder>
   <zorder>instruction_label</zorder>
+  <zorder>remove_file_button</zorder>
+  <zorder>change_drive_button</zorder>
+  <zorder>instruction_label_first</zorder>
   <zorder>drive_frame</zorder>
  </widget>
  <tabstops>
