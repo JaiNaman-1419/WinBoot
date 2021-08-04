@@ -1,5 +1,6 @@
+from PyQt5.QtCore import Qt
 from src.format import Format
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem
 
 
 class Buttons:
@@ -7,16 +8,18 @@ class Buttons:
     # Buttons of Main Window Dialog/
     # TODO define working of buttons in Main Window Dialog.
 
-    def __init__(self, window):
+    def __init__(self, window, drive):
         # Class Attributes
         self.__file_name = None
         self.__file_path = None
         self.__drive_name = None
         self.__drive_path = None
+        self.__checkbox_list = list()
         # Single reference of class MainWindow in main file.
         self.__main_window = window
         # Class objects
         self.__format = Format()
+        self.__drive = drive
 
     def add_iso_file(self):
         file = QFileDialog.getOpenFileName(self.__main_window, "Select .iso file", filter="ISO File(*.iso)")[0]
@@ -28,9 +31,31 @@ class Buttons:
         self.__main_window.remove_file_button.show()
         self.__main_window.drive_button.setDisabled(False)
 
-
     def select_usb_drive(self):
         self.__main_window.drive_frame.show()
+        self.__main_window.drive_table.setRowCount(self.__drive.get_disk_count())
+        index = 0
+        for location, value in self.__drive.get_disk_names_list().items():
+            for size, name in value.items():
+                name = QTableWidgetItem(name)
+                name.setFlags(Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
+                name.setCheckState(Qt.Unchecked)
+                name.device = location
+                self.__checkbox_list.append(name)
+                self.__main_window.drive_table.setItem(index, 0, name)
+                self.__main_window.drive_table.setItem(index, 1, QTableWidgetItem(size))
+                self.__main_window.drive_table.setItem(index, 2, QTableWidgetItem(location))
+                index += 1
+
+        self.__main_window.drive_table.itemClicked.connect(self.__drive_selected)
+
+    def __drive_selected(self, drive):
+        self.__drive_name = drive.text()
+        self.__drive_path = drive.device
+        for disk in self.__checkbox_list:
+            if drive.device == disk.device:
+                continue
+            disk.setCheckState(Qt.Unchecked)
 
     def start_flash_button(self):
         pass
