@@ -1,6 +1,7 @@
 from sys import argv, exit
 from PyQt5.uic import loadUi
 from src.buttons import Buttons
+from src.usb_drive import DriveProperties
 from PyQt5.QtWidgets import QApplication, QDialog, QHeaderView  # , QStackedWidget
 
 
@@ -10,7 +11,8 @@ class MainWindow(QDialog):
         super(MainWindow, self).__init__()
 
         # Class objects or references
-        self.__button = Buttons(self)
+        self.__drive = DriveProperties()
+        self.__button = Buttons(self, self.__drive)
 
         # Class attributes
         self.__file_name = None
@@ -28,6 +30,7 @@ class MainWindow(QDialog):
         self.button_connectors()
         self.hide_window_attributes()
         self.set_drive_table_properties()
+        self.__drive.get_disk_properties()
 
     def hide_window_attributes(self):
         self.drive_frame.hide()
