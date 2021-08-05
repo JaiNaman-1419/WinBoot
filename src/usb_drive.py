@@ -1,5 +1,5 @@
 from psutil import disk_partitions
-from subprocess import Popen, PIPE
+from subprocess import check_output
 from re import match, search, split
 
 
@@ -26,8 +26,7 @@ class DriveProperties:
             return
 
         disk_number = 0
-        output, error = Popen(["pkexec", "sudo", "fdisk", "-l"], stdout=PIPE, stderr=PIPE).communicate()
-        device_model_list = output.decode('utf-8').split('\n')
+        device_model_list = check_output(["pkexec", "fdisk", "-l"]).decode('utf-8').split('\n')
 
         for index, device in enumerate(device_model_list):
             if disk_number < self.__disk_count:
@@ -48,10 +47,19 @@ class DriveProperties:
         self.__get_usb_model()
 
     def get_disk_count(self):
+        print(self.__disk_count)
         return self.__disk_count
+
+    def reduce_disk_count(self):
+        if self.__disk_count > 0:
+            self.__disk_count -= 0
 
     def get_disk_list(self):
         return self.__disks
+
+    def remove_dictionary_element(self):
+        self.__disks.popitem()
+        self.__disk_names.popitem()
 
     def get_disk_names_list(self):
         return self.__disk_names

@@ -33,6 +33,9 @@ class Buttons:
 
     def select_usb_drive(self):
         self.__main_window.drive_frame.show()
+        self.refresh_drive_table()
+
+    def __assign_drive_properties_in_table(self):
         self.__main_window.drive_table.setRowCount(self.__drive.get_disk_count())
         index = 0
         for location, value in self.__drive.get_disk_names_list().items():
@@ -47,9 +50,7 @@ class Buttons:
                 self.__main_window.drive_table.setItem(index, 2, QTableWidgetItem(location))
                 index += 1
 
-        self.__main_window.drive_table.itemClicked.connect(self.__drive_selected)
-
-    def __drive_selected(self, drive):
+    def drive_selected(self, drive):
         self.__drive_name = drive.text()
         self.__drive_path = drive.device
         for disk in self.__checkbox_list:
@@ -61,7 +62,13 @@ class Buttons:
         pass
 
     def refresh_drive_table(self):
-        pass
+        if self.__main_window.drive_table.rowCount() > 0:
+            self.__main_window.drive_table.removeRow(self.__main_window.drive_table.rowCount() - 1)
+            self.__drive.remove_dictionary_element()
+            self.__drive.reduce_disk_count()
+
+        self.__drive.get_disk_properties()
+        self.__assign_drive_properties_in_table()
 
     def remove_file_button(self):
         self.__file_name = None

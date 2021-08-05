@@ -30,7 +30,6 @@ class MainWindow(QDialog):
         self.button_connectors()
         self.hide_window_attributes()
         self.set_drive_table_properties()
-        self.__drive.get_disk_properties()
 
     def hide_window_attributes(self):
         self.drive_frame.hide()
@@ -48,6 +47,7 @@ class MainWindow(QDialog):
         self.remove_file_button.clicked.connect(self.__button.remove_file_button)
         self.cancel_button.clicked.connect(self.__button.cancel_btn_in_drive_frame)
         self.change_drive_button.clicked.connect(self.__button.change_drive_button)
+        self.drive_table.itemClicked.connect(self.__button.drive_selected)
 
     def set_drive_table_properties(self):
         self.drive_table.setColumnWidth(0, 240)
