@@ -690,6 +690,11 @@ QHeaderView::section{
 QTableWidget::item{
 	padding-left: 5px;
 	border: 0px;
+}
+
+QCheckBox::indicator{
+	width: 20px;
+	height: 20px;
 }</string>
     </property>
     <property name="frameShape">
@@ -782,7 +787,7 @@ QTableWidget::item{
    </widget>
    <widget class="QPushButton" name="apply_button">
     <property name="enabled">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
