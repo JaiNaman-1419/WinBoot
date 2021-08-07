@@ -25,6 +25,10 @@
   <property name="windowTitle">
    <string>WinBoot</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../assets/favicon.png</normaloff>../assets/favicon.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">background-color: #121212;</string>
   </property>
