@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt
-from src.format import Format
+from src.format_name import Format
 from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem
 
 
@@ -10,10 +10,7 @@ class Buttons:
 
     def __init__(self, widget, drive):
         # Class Attributes
-        self.__file_name = None
-        self.__file_path = None
-        self.__drive_name = None
-        self.__drive_path = None
+        self.__drive_device = None
         self.__checkbox_list = list()
         # Single reference of class MainWindow in main file.
         self.__widgets = widget
@@ -26,16 +23,18 @@ class Buttons:
         if file == '' or file is None:
             print("Please select Windows iso file!")
             return
-        self.__file_path, self.__file_name = self.__format.format_filepath(file)
+        file_path, file_name = self.__format.format_filepath(file)
+        window.set_file_name(file_name)
+        window.set_file_path(file_path)
         self.change_addfile_and_filenamelabel_state(window)
         window.remove_file_button.show()
         window.drive_button.setDisabled(False)
 
     def remove_file_button(self, window):
-        self.__file_name = None
-        self.__file_path = None
-        self.__drive_name = None
-        self.__drive_path = None
+        window.set_file_name(None)
+        window.set_file_path(None)
+        window.set_drive_name(None)
+        window.set_drive_path(None)
         window.remove_file_button.hide()
         window.change_drive_button.hide()
         window.file_name_label.hide()
@@ -50,8 +49,8 @@ class Buttons:
         self.refresh_drive_table(window)
 
     def change_drive_button(self, window):
-        self.__drive_name = None
-        self.__drive_path = None
+        window.set_drive_name(None)
+        window.set_drive_path(None)
         window.change_drive_button.hide()
         window.drive_name_label.hide()
         window.drive_button.show()
@@ -78,21 +77,21 @@ class Buttons:
                 index += 1
 
     def drive_selected(self, window, drive):
-        self.__drive_name = f"{drive.text()}\n({drive.size})"
-        self.__drive_path = drive.device
+        window.set_drive_name(f"{drive.text()}\n({drive.size})")
+        window.set_drive_path(drive.device)
         for index, disk in enumerate(self.__checkbox_list):
 
             if drive.device == disk.device:
                 if disk.checkState() == Qt.Checked:
                     disk.setCheckState(Qt.Unchecked)
-                    self.__drive_name = None
-                    self.__drive_path = None
+                    window.set_drive_name(None)
+                    window.set_drive_path(None)
                     window.apply_button.setEnabled(False)
                 else:
                     disk.setCheckState(Qt.Checked)
                     window.apply_button.setDisabled(False)
 
-                print(f"Drive Name: {self.__drive_name}\nDrive Path: {self.__drive_path}")
+                print(f"Drive Name: {window.get_drive_name()}\nDrive Path: {window.get_drive_path()}")
                 continue
 
             disk.setCheckState(Qt.Unchecked)
@@ -110,31 +109,31 @@ class Buttons:
     def apply_btn_in_drive_frame(self, window):
         window.drive_frame.hide()
         window.drive_button.hide()
-        window.drive_name_label.setText(self.__drive_name)
+        window.drive_name_label.setText(window.get_drive_name())
         window.drive_name_label.show()
         window.change_drive_button.show()
         window.start_button.setDisabled(False)
         disks = self.__drive.get_disk_list()
-        self.__drive_path = disks[self.__drive_path]
-        print(f"Drive Name: {self.__drive_name}\nDrive Path: {self.__drive_path}")
+        window.set_drive_path(disks[self.__drive_path])
+        print(f"Drive Name: {window.get_drive_name()}\nDrive Path: {window.get_drive_path()}")
 
     def cancel_btn_in_drive_frame(self, window):
-        self.__drive_name = None
-        self.__drive_path = None
+        window.set_drive_name(None)
+        window.set_drive_path(None)
         window.drive_frame.hide()
-        print(f"Drive Name: {self.__drive_name}\nDrive Path: {self.__drive_path}")
+        print(f"Drive Name: {window.get_drive_name()}\nDrive Path: {window.get_drive_path()}")
 
     def start_flash_button(self):
         self.switch_to_flashing_screen()
 
     def change_addfile_and_filenamelabel_state(self, window):
         window.add_button.hide()
-        window.file_name_label.setText(self.__format.format_string_label(self.__file_name))
+        window.file_name_label.setText(self.__format.format_string_label(window.get_file_name()))
         window.file_name_label.show()
 
     def change_drivebtn_and_drivelabel_state(self, window):
         window.drive_button.hide()
-        window.drive_name_label.setText(self.__format.format_string_label(self.__drive_name))
+        window.drive_name_label.setText(self.__format.format_string_label(window.get_drive_name()))
         window.drive_name_label.show()
 
     def switch_to_flashing_screen(self):
@@ -152,17 +151,3 @@ class Buttons:
 
     def switch_to_main_screen(self):
         self.__widgets.setCurrentIndex(self.__widgets.currentIndex() - 1)
-
-    # Getters & Setters
-
-    def get_file_name(self):
-        return self.__file_name
-
-    def get_file_path(self):
-        return self.__file_path
-
-    def get_drive_name(self):
-        return self.__drive_name
-
-    def get_drive_path(self):
-        return self.__drive_path
