@@ -57,6 +57,30 @@ class MainWindow(QDialog):
         self.drive_table.setColumnWidth(2, 180)
         self.drive_table.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
 
+    def set_file_name(self, filename):
+        self.__file_name = filename
+
+    def set_file_path(self, filepath):
+        self.__file_path = filepath
+
+    def set_drive_name(self, drive_name):
+        self.__drive_name = drive_name
+
+    def set_drive_path(self, drive_path):
+        self.__drive_path = drive_path
+
+    def get_file_name(self):
+        return self.__file_name
+
+    def get_file_path(self):
+        return self.__file_path
+
+    def get_drive_name(self):
+        return self.__drive_name
+
+    def get_drive_path(self):
+        return self.__drive_path
+
 
 def set_window_properties(widgets):
     favicon = QIcon("./assets/favicon.png")
