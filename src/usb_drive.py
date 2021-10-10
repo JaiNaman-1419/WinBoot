@@ -22,15 +22,12 @@ class DriveProperties:
     def __get_usb_model(self):
 
         if self.__disks is None:
-            print("Disk list is Empty!")            # For testing purpose
+            print("Disk list is Empty!")
             return
 
-        try:
-            device_model_list = check_output(["pkexec", "fdisk", "-l"]).decode('utf-8').split('\n')
-        except Exception:
-            return False
-
         disk_number = 0
+        device_model_list = check_output(["pkexec", "fdisk", "-l"]).decode('utf-8').split('\n')
+
         for index, device in enumerate(device_model_list):
             if disk_number < self.__disk_count:
                 for disk in list(self.__disks.keys())[disk_number:]:
@@ -43,14 +40,14 @@ class DriveProperties:
                         break
 
             else:
-                return True
+                return
 
     def get_disk_properties(self):
         self.__get_usb_list()
-        return self.__get_usb_model()
+        self.__get_usb_model()
 
     def get_disk_count(self):
-        print("Disk Count:", self.__disk_count)         # For testing purpose
+        print(self.__disk_count)
         return self.__disk_count
 
     def reduce_disk_count(self):
