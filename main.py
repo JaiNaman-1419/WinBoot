@@ -10,11 +10,11 @@ from PyQt5.QtWidgets import QApplication, QDialog, QHeaderView, QStackedWidget
 
 class MainWindow(QDialog):
 
-    def __init__(self, widgets, drive):
+    def __init__(self, widgets_obj, drive_obj):
         super(MainWindow, self).__init__()
 
         # Class objects or references
-        self.__button = Buttons(widgets, drive)
+        self.__button = Buttons(widgets_obj, drive_obj)
 
         # Class attributes
         self.__file_name = None
