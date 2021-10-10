@@ -26,7 +26,14 @@ class DriveProperties:
             return
 
         disk_number = 0
-        device_model_list = check_output(["pkexec", "fdisk", "-l"]).decode('utf-8').split('\n')
+
+        try:
+            device_model_list = check_output(["pkexec", "fdisk", "-l"]).decode('utf-8').split('\n')
+        except Exception:
+            device_model_list = None
+
+        if device_model_list is None:
+            return
 
         for index, device in enumerate(device_model_list):
             if disk_number < self.__disk_count:
