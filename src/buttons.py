@@ -45,8 +45,8 @@ class Buttons:
         window.start_button.setEnabled(False)
 
     def select_usb_drive(self, window):
-        window.drive_frame.show()
-        self.refresh_drive_table(window)
+        if self.refresh_drive_table(window):
+            window.drive_frame.show()
 
     def change_drive_button(self, window):
         window.set_drive_name(None)
@@ -103,8 +103,10 @@ class Buttons:
             self.__drive.reduce_disk_count()
 
         self.__checkbox_list.clear()
-        self.__drive.get_disk_properties()
+        if not self.__drive.get_disk_properties():
+            return False
         self.__assign_drive_properties_in_table(window)
+        return True
 
     def apply_btn_in_drive_frame(self, window):
         window.drive_frame.hide()
