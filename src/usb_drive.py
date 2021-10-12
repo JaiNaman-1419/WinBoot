@@ -26,7 +26,10 @@ class DriveProperties:
             return
 
         disk_number = 0
-        device_model_list = check_output(["pkexec", "fdisk", "-l"]).decode('utf-8').split('\n')
+        try:
+            device_model_list = check_output(["pkexec", "fdisk", "-l"]).decode('utf-8').split('\n')
+        except Exception:
+            return False
 
         for index, device in enumerate(device_model_list):
             if disk_number < self.__disk_count:
@@ -40,11 +43,11 @@ class DriveProperties:
                         break
 
             else:
-                return
+                return True
 
     def get_disk_properties(self):
         self.__get_usb_list()
-        self.__get_usb_model()
+        return self.__get_usb_model()
 
     def get_disk_count(self):
         print(self.__disk_count)
