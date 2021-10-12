@@ -7,6 +7,7 @@ class Data:
         self.__drive_name = None
         self.__drive_path = None
         self.__drive_device = None
+        self.__iso_mount_point = "/media/Windows/"
 
     # Setters of Data Model
 
@@ -41,3 +42,6 @@ class Data:
 
     def get_drive_device(self):
         return self.__drive_device
+
+    def get_iso_mount_point(self):
+        return self.__iso_mount_point
