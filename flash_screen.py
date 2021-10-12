@@ -1,15 +1,16 @@
 from PyQt5.uic import loadUi
-from src.buttons import Buttons
 from PyQt5.QtWidgets import QDialog
+from src.buttons import Buttons
 
 
 class FlashScreen(QDialog):
 
-    def __init__(self, widget, drive):
+    def __init__(self, widget_obj, drive_obj, data_obj):
         super(FlashScreen, self).__init__()
 
         # class objects or references
-        self.__flash_button = Buttons(widget=widget, drive=drive)
+        self.__data = data_obj
+        self.__flash_button = Buttons(widget_obj, drive_obj)
 
         # Loading UI
         loadUi("./ui/flash_screen.ui", self)
