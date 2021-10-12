@@ -4,10 +4,10 @@ from subprocess import check_output
 
 class FormatUSB:
 
-    def __init__(self, usb_device):
+    def __init__(self, data):
         self.__working_directory = getcwd()
         self.__USB_LABEL = "WINDOWS"
-        self.__USB_DEVICE = usb_device
+        self.__USB_DEVICE = data.get_drive_device()
 
     # sudo wipefs --all --force /dev/sdb
     # sudo parted -s -a optimal -- /dev/sdb mklabel msdos
