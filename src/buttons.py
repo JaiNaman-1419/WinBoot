@@ -129,7 +129,8 @@ class Buttons:
         data.set_drive_path(None)
         data.set_drive_device(None)
         window.drive_frame.hide()
-        print(f"[Line 125] - Drive Name: {data.get_drive_name()}\nDrive Path: {data.get_drive_path()}\nDrive Device: {data.get_drive_device()}")
+        print(
+            f"[Line 125] - Drive Name: {data.get_drive_name()}\nDrive Path: {data.get_drive_path()}\nDrive Device: {data.get_drive_device()}")
 
     def start_flash_button(self, data):
         self.switch_to_flashing_screen()
@@ -157,10 +158,13 @@ class Buttons:
         return self.__is_cancelled
 
     def __start_usb_flash(self, data):
-        usb_format = FormatUSB(data)
-        usb_flash = FlashUSB(data)
+        # usb_format = FormatUSB(data)
+        # usb_flash = FlashUSB(data, self)
         # usb_format.format_usb_drive()
         # usb_flash.start_flash()
+        pass
+
+    # TODO create method to update progress bar as callback method for copytree
 
     def go_back_button(self, flash_screen):
         self.set_cancelled_status(False)
