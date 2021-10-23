@@ -7,19 +7,18 @@ from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem
 
 class Buttons:
 
-    # TODO define working of buttons in Main Window Dialog.
-
     def __init__(self, widget, drive):
+
+        # Class objects
+        self.__format = Format()
+        self.__drive = drive
+
         # Class Attributes
         self.__is_cancelled = False
         self.__checkbox_list = list()
 
         # Single reference of class MainWindow in main file.
         self.__widget = widget
-
-        # Class objects
-        self.__format = Format()
-        self.__drive = drive
 
     def add_iso_file(self, window, data):
         file = QFileDialog.getOpenFileName(window, "Select .iso file", filter="ISO File(*.iso)")[0]
@@ -132,9 +131,9 @@ class Buttons:
         print(
             f"[Line 125] - Drive Name: {data.get_drive_name()}\nDrive Path: {data.get_drive_path()}\nDrive Device: {data.get_drive_device()}")
 
-    def start_flash_button(self, data):
+    def start_flash_button(self, data, flash_screen):
         self.switch_to_flashing_screen()
-        self.__start_usb_flash(data)
+        self.__start_usb_flash(data, flash_screen)
 
     def change_addfile_and_filenamelabel_state(self, window, data):
         window.add_button.hide()
@@ -157,14 +156,12 @@ class Buttons:
     def is_flash_cancelled(self):
         return self.__is_cancelled
 
-    def __start_usb_flash(self, data):
+    def __start_usb_flash(self, data, flash_screen):
         # usb_format = FormatUSB(data)
         # usb_flash = FlashUSB(data, self)
         # usb_format.format_usb_drive()
-        # usb_flash.start_flash()
+        # usb_flash.start_flash(flash_screen)
         pass
-
-    # TODO create method to update progress bar as callback method for copytree
 
     def go_back_button(self, flash_screen):
         self.set_cancelled_status(False)
