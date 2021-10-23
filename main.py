@@ -11,11 +11,12 @@ from PyQt5.QtWidgets import QApplication, QDialog, QHeaderView, QStackedWidget
 
 class MainWindow(QDialog):
 
-    def __init__(self, widgets_obj, drive_obj, data_obj):
+    def __init__(self, widgets_obj, drive_obj, data_obj, flash_obj):
         super(MainWindow, self).__init__()
 
         # Class objects or references
         self.__data = data_obj
+        self.__flash_screen = flash_obj
         self.__button = Buttons(widgets_obj, drive_obj)
 
         # Loading UI
@@ -39,7 +40,7 @@ class MainWindow(QDialog):
     def button_connectors(self):
         self.add_button.clicked.connect(lambda: self.__button.add_iso_file(self, self.__data))
         self.drive_button.clicked.connect(lambda: self.__button.select_usb_drive(self))
-        self.start_button.clicked.connect(lambda: self.__button.start_flash_button(self.__data))
+        self.start_button.clicked.connect(lambda: self.__button.start_flash_button(self.__data, self.__flash_screen))
         self.refresh_button.clicked.connect(lambda: self.__button.refresh_drive_table(self))
         self.apply_button.clicked.connect(lambda: self.__button.apply_btn_in_drive_frame(self, self.__data))
         self.remove_file_button.clicked.connect(lambda: self.__button.remove_file_button(self, self.__data))
@@ -71,10 +72,10 @@ if __name__ == '__main__':
     drive = DriveProperties()
     # Instance of Data class
     data = Data()
-    # Instance of MainWindow class from main.py
-    main_window = MainWindow(widgets, drive, data)
     # Instance of FlashScreen class
     flash_screen = FlashScreen(widgets, drive, data)
+    # Instance of MainWindow class from main.py
+    main_window = MainWindow(widgets, drive, data, flash_screen)
     # Adding main_window widget & flash_screen widget to MAIN STACKED WIDGET
     widgets.addWidget(main_window)
     widgets.addWidget(flash_screen)
