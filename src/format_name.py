@@ -20,5 +20,3 @@ class Format:
             return file[1], file[2]
 
         return None, None
-
-    # TODO create method for splitting drive name from its path.
