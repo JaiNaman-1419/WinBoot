@@ -13,7 +13,7 @@ class Replica:
     def get_read_to_buffer(self):
         return self.__READINTO_BUFFER
 
-    def _copytree(self, entries, src, dst, callback, symlinks, ignore, copy_function,
+    def _copytree(self, entries, src, dst, flash_screen, callback, symlinks, ignore, copy_function,
                   ignore_dangling_symlinks, dirs_exist_ok=False):
         if ignore is not None:
             ignored_names = ignore(fspath(src), [x.name for x in entries])
@@ -52,22 +52,22 @@ class Replica:
                             continue
                         # otherwise let the copy occur. copy2 will raise an error
                         if srcentry.is_dir():
-                            self.copytree(src_obj, dst_name, callback, symlinks, ignore,
+                            self.copytree(src_obj, dst_name, flash_screen, callback, symlinks, ignore,
                                           copy_function, dirs_exist_ok=dirs_exist_ok)
                         else:
                             copy_function(src_obj, dst_name)
                         # Manual entry
-                        callback()
+                        callback(flash_screen)
 
                 elif srcentry.is_dir():
-                    self.copytree(src_obj, dst_name, callback, symlinks, ignore, copy_function,
+                    self.copytree(src_obj, dst_name, flash_screen, callback, symlinks, ignore, copy_function,
                                   dirs_exist_ok=dirs_exist_ok)
                 else:
                     # Will raise a SpecialFileError for unsupported file types
                     copy_function(src_obj, dst_name)
 
                     # Manual entry
-                    callback()
+                    callback(flash_screen)
 
             # catch the Error from the recursive copytree so that we can
             # continue with other files
@@ -85,21 +85,21 @@ class Replica:
             raise Error(errors)
         return dst
 
-    def copytree(self, src, dst, callback, symlinks=False, ignore=None, copy_function=copy2,
+    def copytree(self, src, dst, flash_screen, callback, symlinks=False, ignore=None, copy_function=copy2,
                  ignore_dangling_symlinks=False, dirs_exist_ok=False):
         audit("shutil.copytree", src, dst)
         with scandir(src) as itr:
             entries = list(itr)
-        return self._copytree(entries=entries, src=src, dst=dst, callback=callback, symlinks=symlinks,
+        return self._copytree(entries=entries, src=src, dst=dst, flash_screen=flash_screen, callback=callback, symlinks=symlinks,
                               ignore=ignore, copy_function=copy_function,
                               ignore_dangling_symlinks=ignore_dangling_symlinks,
                               dirs_exist_ok=dirs_exist_ok)
 
-    def copyfileobj(self, fsrc, fdst, callback, length=0):
+    def copyfileobj(self, fsrc, fdst, flash_screen, callback, length=0):
         try:
             # check for optimisation opportunity
             if "b" in fsrc.mode and "b" in fdst.mode and fsrc.readinto:
-                return self._copyfileobj_readinto(fsrc, fdst, callback, length)
+                return self._copyfileobj_readinto(fsrc, fdst, flash_screen, callback, length)
         except AttributeError:
             # one or both file objects do not support a .   mode or .readinto attribute
             pass
@@ -117,9 +117,9 @@ class Replica:
                 break
             fdst_write(buf)
             # copied += len(buf)
-            callback()
+            callback(flash_screen)
 
-    def _copyfileobj_readinto(self, fsrc, fdst, callback, length=0):
+    def _copyfileobj_readinto(self, fsrc, fdst, flash_screen, callback, length=0):
         fsrc_readinto = fsrc.readinto
         fdst_write = fdst.write
 
@@ -142,7 +142,7 @@ class Replica:
                 else:
                     fdst_write(mv)
                 # copied += n
-                callback()
+                callback(flash_screen)
 
     def get_folder_size(self, folder):
         total_size = getsize(folder)
