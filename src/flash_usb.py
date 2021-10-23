@@ -2,6 +2,7 @@ from sys import exit
 from src.replicate import Replica
 from subprocess import check_output
 from os import listdir, mkdir, rmdir
+from PyQt5.QtWidgets import QMessageBox
 from os.path import isfile, exists, join
 from shutil import copyfile, ignore_patterns
 
@@ -12,6 +13,14 @@ class FlashUSB:
         self.__data = data
         self.__dir = False
         self.__buttons_obj = button_obj
+
+    def __show_alert_box(self, message):
+        alert = QMessageBox()
+        alert.setIcon(QMessageBox.Critical)
+        alert.setText("Error")
+        alert.setInformativeText(message)
+        alert.setWindowTitle("Error occurred!")
+        alert.show()
 
     def __create_directory(self, directory):
         try:
@@ -30,7 +39,8 @@ class FlashUSB:
 
     def __mount_iso_file(self):
         if not self.__create_directory(self.__data.get_iso_mount_point()):
-            # TODO show dialog box that an error occurred!
+            # TODO change message of alert box!
+            self.__show_alert_box("Something went wrong!!\n[Line number: 42]")
             exit()
         check_output(["sudo", "mount", f"{self.__data.get_file_path()}", f"{self.__data.get_iso_mount_point()}"])
 
@@ -38,23 +48,29 @@ class FlashUSB:
         try:
             check_output(["sudo", "umount", f"{self.__data.get_iso_mount_point()}"])
         except Exception as e:
-            # TODO show dialog box that an error occurred!
+            # TODO change message of alert box!
+            self.__show_alert_box("Something went wrong!!\n[Line number: 51]")
             print(f"\n\nLine Number: 32\nError occurred: {e}")
+            exit()
 
         try:
             if exists(self.__data.get_iso_mount_point()):
                 rmdir(self.__data.get_iso_mount_point())
         except Exception as e:
-            # TODO show dialog box that an error occurred!
+            # TODO change message of alert box!
+            self.__show_alert_box("Something went wrong!!\n[Line number: 60]")
             print(f"\n\nLine Number: 38\nError occurred: {e}")
+            exit()
 
     def __convert_wim_to_swm(self):
         try:
             check_output(["wimlib-imagex", "split", f"{self.__data.get_iso_mount_point()}/sources/install.wim",
                           f"/media/install.swm", "4000"])
         except Exception as e:
-            # TODO show dialog box that an error occurred!
+            # TODO change message of alert box!
+            self.__show_alert_box("Something went wrong!!\n[Line number: 42]")
             print(f"\n\nLine Number: 47\nError occurred: {e}")
+            exit()
 
     def __calculate_copied_size(self):
         replica = Replica()
