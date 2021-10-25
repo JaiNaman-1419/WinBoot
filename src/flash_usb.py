@@ -100,9 +100,10 @@ class FlashUSB:
         if self.__buttons_obj.is_flash_cancelled():
             return
 
-        src = self.__data.get_file_path()
-        dst = self.__data.get_iso_mount_point()
+        src = self.__data.get_iso_mount_point()
+        dst = self.__data.get_drive_path()
         replica = Replica()
+
         src_items = listdir(src)
 
         for item_name in src_items:
