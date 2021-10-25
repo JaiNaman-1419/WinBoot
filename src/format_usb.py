@@ -23,7 +23,9 @@ class FormatUSB:
         check_output(["sudo", "parted", "-s", "-a", "optimal", "--", f"{self.__USB_DEVICE[:-1]}", "mklabel", "gpt"])
 
     def __create_new_partition(self):
-        check_output(["sudo", "parted", "-s", "-a", "optimal", "--", f"{self.__USB_DEVICE[:-1]}", "mkpart", "primary", "fat32", "1MiB", "100%"])
+        check_output(
+            ["sudo", "parted", "-s", "-a", "optimal", "--", f"{self.__USB_DEVICE[:-1]}", "mkpart", "primary", "fat32",
+             "1MiB", "100%"])
 
     def __disk_align_check(self):
         check_output(["sudo", "parted", "-s", "--", f"{self.__USB_DEVICE[:-1]}", "align-check", "optimal", "1"])
