@@ -20,7 +20,19 @@ class FlashUSB:
         alert.setText("Error")
         alert.setInformativeText(message)
         alert.setWindowTitle("Error occurred!")
+        alert.setStandardButtons(QMessageBox.Ok)
+        alert.buttonClicked.connect(lambda: alert.hide())
         alert.show()
+
+    def __show_message_box(self, msg):
+        message = QMessageBox()
+        message.setIcon(QMessageBox.Information)
+        message.setText("Congratulations!")
+        message.setInformativeText(msg)
+        message.setWindowTitle("Flashed")
+        message.setStandardButtons(QMessageBox.Ok)
+        message.buttonClicked.connect(lambda: message.hide())
+        message.show()
 
     def __create_directory(self, directory):
         try:
@@ -77,8 +89,8 @@ class FlashUSB:
         replica = Replica()
         folder_size = replica.get_folder_size(self.__data.get_drive_path())
         iso_file_size = replica.get_folder_size(self.__data.get_iso_mount_point())
-        status = "{:.2f}".format((folder_size / iso_file_size) * 100)
-        return status
+        status = float("{:.2f}".format((folder_size / iso_file_size) * 100))
+        return status - 1
 
     def __update_progress_bar(self, flash_screen):
         flash_screen.flash_bar.setValue(self.__calculate_copied_size())
@@ -132,3 +144,5 @@ class FlashUSB:
         self.__copy_swm_file_to_usb(flash_screen)
         self.__unmount_iso_file()
         self.__remove_directory()
+        flash_screen.flash_bar.setValue(100)
+        self.__show_message_box("Congratulations!\nYour Windows bootable USB drive is ready.")
