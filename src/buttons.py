@@ -133,6 +133,7 @@ class Buttons:
 
     def start_flash_button(self, data, flash_screen):
         self.switch_to_flashing_screen()
+        self.set_cancelled_status(False)
         self.__start_usb_flash(data, flash_screen)
 
     def change_addfile_and_filenamelabel_state(self, window, data):
@@ -163,16 +164,9 @@ class Buttons:
         # usb_flash.start_flash(flash_screen)
         pass
 
-    def go_back_button(self, flash_screen):
-        self.set_cancelled_status(False)
-        flash_screen.back_button.setEnabled(False)
-        flash_screen.cancel_button.setDisabled(False)
-        self.switch_to_main_screen()
-
     def cancel_flash_button(self, flash_screen):
         self.set_cancelled_status(True)
-        flash_screen.back_button.setDisabled(False)
-        flash_screen.cancel_button.setEnabled(False)
+        self.switch_to_main_screen()
 
     def switch_to_main_screen(self):
         self.__widget.setCurrentIndex(self.__widget.currentIndex() - 1)
