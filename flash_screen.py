@@ -22,5 +22,4 @@ class FlashScreen(QDialog):
         self.flash_button_connectors()
 
     def flash_button_connectors(self):
-        self.back_button.clicked.connect(lambda: self.__flash_button.go_back_button(self))
         self.cancel_button.clicked.connect(lambda: self.__flash_button.cancel_flash_button(self))
