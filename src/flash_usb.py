@@ -29,7 +29,7 @@ class FlashUSB:
         message.setIcon(QMessageBox.Information)
         message.setText("Congratulations!")
         message.setInformativeText(msg)
-        message.setWindowTitle("Flashed")
+        message.setWindowTitle("Information")
         message.setStandardButtons(QMessageBox.Ok)
         message.buttonClicked.connect(lambda: message.hide())
         message.show()
