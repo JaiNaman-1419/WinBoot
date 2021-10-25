@@ -39,7 +39,8 @@ class DriveProperties:
                     if search(device_pattern, device):
                         disk_number += 1
                         size = split(device_pattern, device)[1].strip()
-                        self.__disk_names[disk] = {f"{size}": f"{split(model_pattern, device_model_list[index+1])[1].strip()}"}
+                        self.__disk_names[disk] = {
+                            f"{size}": f"{split(model_pattern, device_model_list[index + 1])[1].strip()}"}
                         break
 
             else:
