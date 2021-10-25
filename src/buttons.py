@@ -1,4 +1,5 @@
 from PyQt5.QtCore import Qt
+from threading import Thread
 from src.format_name import Format
 from src.flash_usb import FlashUSB
 from src.format_usb import FormatUSB
@@ -170,8 +171,12 @@ class Buttons:
     def __start_usb_flash(self, data, flash_screen):
         usb_format = FormatUSB(data)
         usb_flash = FlashUSB(data, self)
-        usb_format.format_usb_drive()
-        usb_flash.convert_wim_to_swm()
+        format_thread = Thread(target=usb_format.format_usb_drive)
+        flash_thread = Thread(target=usb_flash.convert_wim_to_swm)
+        format_thread.start()
+        flash_thread.start()
+        format_thread.join()
+        flash_thread.join()
         usb_flash.start_flash(flash_screen)
 
     def cancel_flash_button(self, flash_screen):
