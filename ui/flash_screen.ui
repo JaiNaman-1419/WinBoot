@@ -81,56 +81,6 @@
     <number>-1</number>
    </property>
   </widget>
-  <widget class="QPushButton" name="back_button">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>20</y>
-     <width>110</width>
-     <height>45</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>110</width>
-     <height>45</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>110</width>
-     <height>45</height>
-    </size>
-   </property>
-   <property name="cursor">
-    <cursorShape>PointingHandCursor</cursorShape>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QPushButton{
-	font-size: 22px;
-	border: none;
-	background: none;
-	color: rgb(255, 255, 255);
-}
-
-QPushButton:hover{
-	color: rgb(186, 189, 182);
-}
-QPushButton:pressed{
-	color: rgb(255, 255, 255);
-}
-
-QPushButton:disabled{
-	color: rgba(255, 255, 255, 0.65);
-}</string>
-   </property>
-   <property name="text">
-    <string>&lt; Back</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="flashing_label">
    <property name="geometry">
     <rect>
