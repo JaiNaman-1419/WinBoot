@@ -2,7 +2,7 @@ from PyQt5.QtCore import Qt
 from src.format_name import Format
 from src.flash_usb import FlashUSB
 from src.format_usb import FormatUSB
-from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem
+from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox
 
 
 class Buttons:
@@ -20,10 +20,18 @@ class Buttons:
         # Single reference of class MainWindow in main file.
         self.__widget = widget
 
+    def __show_alert_box(self, message):
+        alert = QMessageBox()
+        alert.setIcon(QMessageBox.Critical)
+        # alert.setText("Error")
+        alert.setInformativeText(message)
+        alert.setWindowTitle("Warning!")
+        alert.show()
+
     def add_iso_file(self, window, data):
         file = QFileDialog.getOpenFileName(window, "Select .iso file", filter="ISO File(*.iso)")[0]
         if file == '' or file is None:
-            print("Please select Windows iso file!")
+            self.__show_alert_box("Please select Windows iso file!")
             return
         file_path, file_name = self.__format.format_filepath(file)
         data.set_file_name(file_name)
@@ -50,6 +58,8 @@ class Buttons:
     def select_usb_drive(self, window):
         if self.refresh_drive_table(window):
             window.drive_frame.show()
+        else:
+            self.__show_alert_box("Please enter USB Drive!")
 
     def change_drive_button(self, window, data):
         data.set_drive_name(None)
@@ -95,7 +105,7 @@ class Buttons:
                     disk.setCheckState(Qt.Checked)
                     window.apply_button.setDisabled(False)
 
-                print(f"[Line 93] - Drive Name: {data.get_drive_name()}\nDrive Device: {data.get_drive_device()}")
+                print(f"[Line 108] - Drive Name: {data.get_drive_name()}\nDrive Device: {data.get_drive_device()}")
                 continue
 
             disk.setCheckState(Qt.Unchecked)
@@ -121,7 +131,7 @@ class Buttons:
         window.start_button.setDisabled(False)
         disks = self.__drive.get_disk_list()
         data.set_drive_path(disks[data.get_drive_device()])
-        print(f"[Line 120] - Drive Name: {data.get_drive_name()}\nDrive Path: {data.get_drive_path()}")
+        print(f"[Line 134] - Drive Name: {data.get_drive_name()}\nDrive Path: {data.get_drive_path()}")
 
     def cancel_btn_in_drive_frame(self, window, data):
         data.set_drive_name(None)
@@ -129,7 +139,7 @@ class Buttons:
         data.set_drive_device(None)
         window.drive_frame.hide()
         print(
-            f"[Line 125] - Drive Name: {data.get_drive_name()}\nDrive Path: {data.get_drive_path()}\nDrive Device: {data.get_drive_device()}")
+            f"[Line 142] - Drive Name: {data.get_drive_name()}\nDrive Path: {data.get_drive_path()}\nDrive Device: {data.get_drive_device()}")
 
     def start_flash_button(self, data, flash_screen):
         self.switch_to_flashing_screen()
@@ -158,11 +168,11 @@ class Buttons:
         return self.__is_cancelled
 
     def __start_usb_flash(self, data, flash_screen):
-        # usb_format = FormatUSB(data)
-        # usb_flash = FlashUSB(data, self)
-        # usb_format.format_usb_drive()
-        # usb_flash.start_flash(flash_screen)
-        pass
+        usb_format = FormatUSB(data)
+        usb_flash = FlashUSB(data, self)
+        usb_format.format_usb_drive()
+        usb_flash.convert_wim_to_swm()
+        usb_flash.start_flash(flash_screen)
 
     def cancel_flash_button(self, flash_screen):
         self.set_cancelled_status(True)
