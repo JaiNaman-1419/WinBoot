@@ -42,8 +42,8 @@ class FlashUSB:
             return True
 
         except Exception as e:
-            self.__show_alert_box("Something went wrong!!\n[Line number: 26]")
-            print(f"\n\nLine Number: 26\nError occurred: {e}")
+            self.__show_alert_box("Something went wrong!!\n[Line number: 38]")
+            print(f"\n\nLine Number: 38\nError occurred: {e}")
             return False
 
     def __remove_directory(self):
