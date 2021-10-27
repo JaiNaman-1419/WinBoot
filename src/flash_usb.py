@@ -77,7 +77,8 @@ class FlashUSB:
 
     def convert_wim_to_swm(self):
         try:
-            check_output(["wimlib-imagex", "split", f"{self.__data.get_iso_mount_point()}/sources/install.wim",
+            wim_lib = "Modules/wimlib-imagex"
+            check_output([wim_lib, "split", f"{self.__data.get_iso_mount_point()}sources/install.wim",
                           "/media/install.swm", "4000"])
         except Exception as e:
             # TODO change message of alert box!
