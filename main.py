@@ -40,7 +40,7 @@ class MainWindow(QDialog):
     def button_connectors(self):
         self.add_button.clicked.connect(lambda: self.__button.add_iso_file(self, self.__data))
         self.drive_button.clicked.connect(lambda: self.__button.select_usb_drive(self))
-        self.start_button.clicked.connect(lambda: self.__button.start_flash_button(self.__data, self.__flash_screen))
+        self.start_button.clicked.connect(lambda: self.__button.start_flash_button(self, self.__data, self.__flash_screen))
         self.refresh_button.clicked.connect(lambda: self.__button.refresh_drive_table(self))
         self.apply_button.clicked.connect(lambda: self.__button.apply_btn_in_drive_frame(self, self.__data))
         self.remove_file_button.clicked.connect(lambda: self.__button.remove_file_button(self, self.__data))
