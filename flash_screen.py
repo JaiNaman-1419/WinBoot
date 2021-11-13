@@ -8,12 +8,12 @@ class FlashScreen(QDialog):
     def __init__(self, widget_obj, drive_obj, data_obj):
         super(FlashScreen, self).__init__()
 
+        # Loading UI
+        loadUi("./ui/flash_screen.ui", self)
+
         # class objects or references
         self.__data = data_obj
         self.__flash_button = Buttons(widget_obj, drive_obj)
-
-        # Loading UI
-        loadUi("./ui/flash_screen.ui", self)
 
         # Class Method calls
         self.flash_auto_call_methods()
