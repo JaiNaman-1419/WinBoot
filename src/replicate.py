@@ -1,7 +1,7 @@
 import stat
 from sys import audit
 from os.path import join, exists, isdir, isfile, getsize
-from shutil import copy, copy2, copystat, Error, COPY_BUFSIZE
+from shutil import copy, copy2, copystat, Error
 from os import fspath, makedirs, name, readlink, symlink, scandir, listdir
 
 
@@ -95,7 +95,7 @@ class Replica:
                               ignore_dangling_symlinks=ignore_dangling_symlinks,
                               dirs_exist_ok=dirs_exist_ok)
 
-    def copyfileobj(self, fsrc, fdst, flash_screen, callback, length=0):
+    def copyfileobj(self, fsrc, fdst, flash_screen, callback, length=1024 * 1024 * 10):
         try:
             # check for optimisation opportunity
             if "b" in fsrc.mode and "b" in fdst.mode and fsrc.readinto:
@@ -105,7 +105,7 @@ class Replica:
             pass
 
         if not length:
-            length = COPY_BUFSIZE
+            length = 1024 * 1024 * 10
 
         fsrc_read = fsrc.read
         fdst_write = fdst.write
@@ -119,16 +119,9 @@ class Replica:
             # copied += len(buf)
             callback(flash_screen)
 
-    def _copyfileobj_readinto(self, fsrc, fdst, flash_screen, callback, length=0):
+    def _copyfileobj_readinto(self, fsrc, fdst, flash_screen, callback, length=1024 * 1024 * 10):
         fsrc_readinto = fsrc.readinto
         fdst_write = fdst.write
-
-        if not length:
-            try:
-                file_size = stat(fsrc.fileno()).st_size
-            except OSError:
-                file_size = self.get_read_to_buffer()
-            length = min(file_size, self.get_read_to_buffer())
 
         # copied = 0
         with memoryview(bytearray(length)) as mv:
