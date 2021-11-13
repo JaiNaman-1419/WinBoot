@@ -25,7 +25,7 @@ class Buttons:
         alert.setStyleSheet("color: #FFFFFF; font-size: 20px; background-color: #121212;")
         alert.setIcon(QMessageBox.Critical)
         alert.setText("Error")
-        alert.setInformativeText(f"Error occurred {message}")
+        alert.setInformativeText(f"{message}")
         alert.setWindowTitle("Warning!")
         alert.setStandardButtons(QMessageBox.Ok)
         alert.buttonClicked.connect(lambda: alert.hide())
@@ -145,9 +145,10 @@ class Buttons:
         # print(
         #     f"[Line 142] - Drive Name: {data.get_drive_name()}\nDrive Path: {data.get_drive_path()}\nDrive Device: {data.get_drive_device()}")
 
-    def start_flash_button(self, data, flash_screen):
+    def start_flash_button(self, window, data, flash_screen):
         self.switch_to_flashing_screen()
         self.set_cancelled_status(False)
+        self.remove_file_button(window, data)
         self.__start_usb_flash(data, flash_screen)
 
     def change_addfile_and_filenamelabel_state(self, window, data):
@@ -182,6 +183,11 @@ class Buttons:
     def cancel_flash_button(self, flash_screen):
         self.set_cancelled_status(True)
         self.switch_to_main_screen()
+
+    def completed_flash_button(self, flash_screen):
+        self.switch_to_main_screen()
+        flash_screen.cancel_button.show()
+        flash_screen.completed_button.hide()
 
     def switch_to_main_screen(self):
         self.__widget.setCurrentIndex(self.__widget.currentIndex() - 1)
