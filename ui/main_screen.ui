@@ -30,7 +30,8 @@
     <normaloff>../../../Pictures/assets/favicon.png</normaloff>../../../Pictures/assets/favicon.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: #121212;</string>
+   <string notr="true">color: #FFFFFF;
+background-color: #121212;</string>
   </property>
   <widget class="QLabel" name="drive_label">
    <property name="enabled">
@@ -678,17 +679,23 @@ QPushButton:hover{
     <property name="styleSheet">
      <string notr="true">QTableWidget{
 	color: #000000;
+	font-size: 18px;
+	font-weight: 500;
 	background-color: rgb(238, 238, 236);
 	alternate-background-color: rgb(255, 255, 255);
 }
 
 QHeaderView::section{
 	border: none;
+	font-size: 18px;
+	font-weight: 500;
 	background-color: rgb(211, 215, 207);
 }
 
 QTableWidget::item{
 	padding-left: 5px;
+	font-size: 18px;
+	font-weight: 500;
 	border: 0px;
 }
 
@@ -918,6 +925,8 @@ QPushButton:disabled{
    <property name="styleSheet">
     <string notr="true">QLabel{
 	color: #FFFFFF;
+	font-size: 18px;
+	font-weight: 500;
 	selection-color: rgb(0, 120, 212);
 }</string>
    </property>
@@ -964,6 +973,8 @@ QPushButton:disabled{
    <property name="styleSheet">
     <string notr="true">QLabel{
 	color: #FFFFFF;
+	font-size: 18px;
+	font-weight: 500;
 }</string>
    </property>
    <property name="text">
