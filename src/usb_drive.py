@@ -15,14 +15,15 @@ class DriveProperties:
         disk_list = disk_partitions()
         for disk in disk_list:
             if match(pattern, disk.device):
-                self.__disks[disk.device] = disk.mountpoint
+                if not match(fr"{pattern}[2-9]", disk.device):
+                    self.__disks[disk.device] = disk.mountpoint
 
-        self.__disk_count = len(self.__disks.keys())
+        self.__disk_count = len(self.__disks)
 
     def __get_usb_model(self):
 
         if self.__disks is None:
-            print("Disk list is Empty!")
+            # print("Disk list is Empty!")
             return
 
         disk_number = 0
@@ -51,7 +52,7 @@ class DriveProperties:
         return self.__get_usb_model()
 
     def get_disk_count(self):
-        print(self.__disk_count)
+        # print(self.__disk_count)
         return self.__disk_count
 
     def reduce_disk_count(self):
