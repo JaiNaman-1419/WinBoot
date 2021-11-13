@@ -25,16 +25,6 @@ class FlashUSB:
         alert.buttonClicked.connect(lambda: alert.hide())
         alert.show()
 
-    def __show_message_box(self, msg):
-        message = QMessageBox()
-        message.setIcon(QMessageBox.Information)
-        message.setText("Congratulations!")
-        message.setInformativeText(msg)
-        message.setWindowTitle("Information")
-        message.setStandardButtons(QMessageBox.Ok)
-        message.buttonClicked.connect(lambda: message.hide())
-        message.show()
-
     def __create_directory(self, directory):
         try:
             if not exists(directory):
@@ -166,5 +156,5 @@ class FlashUSB:
         # self.__remove_directory()
         flash_screen.flash_bar.setFormat('%.02f%%' % 100.00)
         flash_screen.flash_bar.setValue(100.00)
-        # print("Your Windows bootable USB drive is ready.")
-        self.__show_message_box("Congratulations!\nYour Windows bootable USB drive is ready.")
+        flash_screen.cancel_button.hide()
+        flash_screen.completed_button.show()
