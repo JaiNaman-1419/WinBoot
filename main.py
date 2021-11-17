@@ -1,3 +1,5 @@
+from os import getenv
+from PyQt5 import QtCore
 from sys import argv, exit
 from PyQt5.uic import loadUi
 from functools import partial
@@ -6,7 +8,7 @@ from src.buttons import Buttons
 from Model.data_model import Data
 from flash_screen import FlashScreen
 from src.usb_drive import DriveProperties
-from PyQt5.QtWidgets import QApplication, QDialog, QHeaderView, QStackedWidget
+from PyQt5.QtWidgets import QApplication, QDialog, QHeaderView, QStackedWidget, QMessageBox
 
 
 class MainWindow(QDialog):
@@ -40,7 +42,8 @@ class MainWindow(QDialog):
     def button_connectors(self):
         self.add_button.clicked.connect(lambda: self.__button.add_iso_file(self, self.__data))
         self.drive_button.clicked.connect(lambda: self.__button.select_usb_drive(self))
-        self.start_button.clicked.connect(lambda: self.__button.start_flash_button(self, self.__data, self.__flash_screen))
+        self.start_button.clicked.connect(
+            lambda: self.__button.start_flash_button(self, self.__data, self.__flash_screen))
         self.refresh_button.clicked.connect(lambda: self.__button.refresh_drive_table(self))
         self.apply_button.clicked.connect(lambda: self.__button.apply_btn_in_drive_frame(self, self.__data))
         self.remove_file_button.clicked.connect(lambda: self.__button.remove_file_button(self, self.__data))
@@ -63,7 +66,6 @@ def set_window_properties(widget):
 
 
 if __name__ == '__main__':
-
     # Instance of QApplication class
     application = QApplication(argv)
     # Instance of QStackedWidget class
@@ -83,4 +85,23 @@ if __name__ == '__main__':
     set_window_properties(widgets)
     # Starting & ending of app
     widgets.show()
+
+    if getenv("USER") != "root":
+        alert = QMessageBox(main_window)
+        alert.setStyleSheet("""QMessageBox{
+                            color: #FFFFFF; font-size: 20px; background-color: #121212; 
+                            border: 2px solid #343434; border-radius: 5px;
+                            }""")
+        alert.setIcon(QMessageBox.Critical)
+        alert.setText("Error!")
+        alert.setInformativeText('Run WinBoot as "sudo".\nIt requires Administrator privileges.')
+        alert.setWindowTitle("Error occurred")
+        alert.setStandardButtons(QMessageBox.Ok)
+        alert.buttonClicked.connect(lambda: exit())
+        alert.setWindowFlags(alert.windowFlags() & QtCore.Qt.CustomizeWindowHint)
+        alert.setStandardButtons(QMessageBox.Ok)
+        alert.setDefaultButton(QMessageBox.Ok)
+        alert.setEscapeButton(QMessageBox.Ok)
+        alert.show()
+
     exit(application.exec())
