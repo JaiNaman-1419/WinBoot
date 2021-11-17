@@ -23,7 +23,6 @@ class DriveProperties:
     def __get_usb_model(self):
 
         if self.__disks is None:
-            # print("Disk list is Empty!")
             return
 
         disk_number = 0
@@ -52,7 +51,6 @@ class DriveProperties:
         return self.__get_usb_model()
 
     def get_disk_count(self):
-        # print(self.__disk_count)
         return self.__disk_count
 
     def reduce_disk_count(self):
