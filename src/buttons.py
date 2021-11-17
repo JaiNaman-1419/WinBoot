@@ -87,7 +87,6 @@ class Buttons:
                 name.device = location
                 name.size = size
                 self.__checkbox_list.append(name)
-                # print(self.__checkbox_list)
                 window.drive_table.setItem(index, 0, name)
                 window.drive_table.setItem(index, 1, QTableWidgetItem(size))
                 window.drive_table.setItem(index, 2, QTableWidgetItem(location))
@@ -108,7 +107,6 @@ class Buttons:
                     disk.setCheckState(Qt.Checked)
                     window.apply_button.setDisabled(False)
 
-                # print(f"[Line 108] - Drive Name: {data.get_drive_name()}\nDrive Device: {data.get_drive_device()}")
                 continue
 
             disk.setCheckState(Qt.Unchecked)
@@ -121,7 +119,6 @@ class Buttons:
 
         self.__checkbox_list.clear()
         if not self.__drive.get_disk_properties():
-            # print("\n~~~Got no disk properties~~~\n")
             return False
         self.__assign_drive_properties_in_table(window)
         return True
@@ -134,22 +131,19 @@ class Buttons:
         window.change_drive_button.show()
         window.start_button.setDisabled(False)
         disks = self.__drive.get_disk_list()
-        data.set_drive_path(disks[data.get_drive_device()])
-        # print(f"[Line 134] - Drive Name: {data.get_drive_name()}\nDrive Path: {data.get_drive_path()}")
+        data.set_drive_path(self.__format.format_drive_path(disks[data.get_drive_device()]))
 
     def cancel_btn_in_drive_frame(self, window, data):
         data.set_drive_name(None)
         data.set_drive_path(None)
         data.set_drive_device(None)
         window.drive_frame.hide()
-        # print(
-        #     f"[Line 142] - Drive Name: {data.get_drive_name()}\nDrive Path: {data.get_drive_path()}\nDrive Device: {data.get_drive_device()}")
 
     def start_flash_button(self, window, data, flash_screen):
         self.switch_to_flashing_screen()
         self.set_cancelled_status(False)
-        self.remove_file_button(window, data)
         self.__start_usb_flash(data, flash_screen)
+        self.remove_file_button(window, data)
 
     def change_addfile_and_filenamelabel_state(self, window, data):
         window.add_button.hide()
@@ -175,12 +169,12 @@ class Buttons:
     def __start_usb_flash(self, data, flash_screen):
         usb_format = FormatUSB(data)
         usb_flash = FlashUSB(data, self)
-        usb_format.format_usb_drive()
-        usb_flash.mount_iso_file()
-        usb_flash.convert_wim_to_swm()
+        usb_format.format_usb_drive(flash_screen)
+        usb_flash.mount_iso_file(flash_screen)
+        usb_flash.convert_wim_to_swm(flash_screen)
         usb_flash.start_flash(flash_screen)
 
-    def cancel_flash_button(self, flash_screen):
+    def cancel_flash_button(self):
         self.set_cancelled_status(True)
         self.switch_to_main_screen()
 
