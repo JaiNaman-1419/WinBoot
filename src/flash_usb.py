@@ -14,13 +14,13 @@ class FlashUSB:
         self.__dir = False
         self.__buttons_obj = button_obj
 
-    def __show_alert_box(self, message):
-        alert = QMessageBox()
+    def __show_alert_box(self, dialog=None, icon=QMessageBox.Critical, text="Error", message=None, title="Error occurred"):
+        alert = QMessageBox(dialog)
         alert.setStyleSheet("color: #FFFFFF; font-size: 20px; background-color: #121212;")
-        alert.setIcon(QMessageBox.Critical)
-        alert.setText("Error")
-        alert.setInformativeText(f"Error occurred {message}")
-        alert.setWindowTitle("Error occurred!")
+        alert.setIcon(icon)
+        alert.setText(text)
+        alert.setInformativeText(message)
+        alert.setWindowTitle(title)
         alert.setStandardButtons(QMessageBox.Ok)
         alert.buttonClicked.connect(lambda: alert.hide())
         alert.show()
@@ -34,20 +34,21 @@ class FlashUSB:
 
         except Exception as e:
             self.__show_alert_box("Something went wrong!!\n[Line number: 38]")
-            # print(f"\n\nLine Number: 39\nError occurred: {e}")
             return False
 
     def __remove_directory(self):
         if self.__dir:
             rmdir(self.__data.get_iso_mount_point())
 
-    def mount_iso_file(self):
+    def mount_iso_file(self, flash_screen):
         if not self.__create_directory(self.__data.get_iso_mount_point()):
             # TODO change message of alert box!
             self.__show_alert_box("Something went wrong!!\n[Line number: 42]")
             exit()
         check_output(["mount", join(self.__data.get_file_path(), self.__data.get_file_name()),
                       f"{self.__data.get_iso_mount_point()}"])
+        flash_screen.flash_bar.setFormat('%.02f%%' % 8.00)
+        flash_screen.flash_bar.setValue(8.00)
 
     def __unmount_iso_file(self):
         try:
@@ -55,43 +56,40 @@ class FlashUSB:
         except Exception as e:
             # TODO change message of alert box!
             self.__show_alert_box("Something went wrong!!\n[Line number: 49]")
-            # print(f"\n\nLine Number: 49\nError occurred: {e}")
             exit()
 
         try:
             if exists(self.__data.get_iso_mount_point()):
                 rmdir(self.__data.get_iso_mount_point())
-                # check_output(["pkexec", "rmdir", self.__data.get_iso_mount_point()])
         except Exception as e:
             # TODO change message of alert box!
             self.__show_alert_box("Something went wrong!!\n[Line number: 57]")
-            # print(f"\n\nLine Number: 57\nError occurred: {e}")
             exit()
 
-    def convert_wim_to_swm(self):
+    def convert_wim_to_swm(self, flash_screen):
         try:
             # print(getcwd())
             wim_lib = join(getcwd(), "Modules", "wimlib-imagex")
             check_output([wim_lib, "split", join(self.__data.get_iso_mount_point(), "sources/install.wim"),
                           "/media/install.swm", "4000"])
+            flash_screen.flash_bar.setFormat('%.02f%%' % 10.00)
+            flash_screen.flash_bar.setValue(10.00)
         except Exception as e:
             # TODO change message of alert box!
             self.__show_alert_box("Something went wrong!!\n[Line number: 67]")
-            # print(f"\n\nLine Number: 81\nError occurred: {e}")
             exit()
 
     def __calculate_copied_size(self):
         replica = Replica()
         folder_size = replica.get_folder_size(self.__data.get_drive_path())
         iso_file_size = replica.get_folder_size(self.__data.get_iso_mount_point())
-        status = float("{:.2f}".format((folder_size / iso_file_size) * 100))
-        if status == 100.00:
+        status = float("{:.2f}".format((folder_size / iso_file_size) * 90))
+        if status == 90.00:
             return status - 1
         return status
 
     def __update_progress_bar(self, flash_screen):
-        value = self.__calculate_copied_size()
-        # print(value, end="\t")
+        value = self.__calculate_copied_size() + 10.00
         flash_screen.flash_bar.setFormat('%.02f%%' % value)
         flash_screen.flash_bar.setValue(value)
 
@@ -102,7 +100,6 @@ class FlashUSB:
 
         src = self.__data.get_iso_mount_point()
         dst = self.__data.get_drive_path()
-        print("Line 108:", src, dst)
         replica = Replica()
 
         src_items = listdir(src)
@@ -134,26 +131,25 @@ class FlashUSB:
             fdst = open(dst, 'wb')
             replica.copyfileobj(fsrc=fsrc, fdst=fdst, flash_screen=flash_screen, callback=self.__update_progress_bar)
             try:
-                # print("Removing file:", src)
                 remove(src)
             except Exception as e:
                 self.__show_alert_box("Something went wrong\n[Line number: 120]")
-                # print(f"\n\nLine Number: 120\nError occurred: {e}")
 
         del replica
 
+    def __unmount_formatted_usb_drive(self, flash_screen):
+        check_output(["sudo", "umount", self.__data.get_drive_device()])
+        rmdir(self.__data.get_drive_path())
+        self.__show_alert_box(flash_screen, QMessageBox.Information, "Congratulations!",
+                              "Your USB drive is now bootable and already unmounted.\nTo use it just remove the USB "
+                              "and plug it again!", "Information")
+        # check_output(["sudo", "rmdir", self.__data.get_drive_path()])
+
     def start_flash(self, flash_screen):
-        # self.__mount_iso_file()
-        # print("Start copying items to USB")
         self.__copy_items_to_usb(flash_screen)
-        # self.convert_wim_to_swm()
-        # print("Percentage before swm:", flash_screen.flash_bar.value())
-        # print("Start copying swm files to USB")
         self.__copy_swm_file_to_usb(flash_screen)
-        # print("Unmounting iso file")
         self.__unmount_iso_file()
-        # print("Removing directory")
-        # self.__remove_directory()
+        self.__unmount_formatted_usb_drive(flash_screen)
         flash_screen.flash_bar.setFormat('%.02f%%' % 100.00)
         flash_screen.flash_bar.setValue(100.00)
         flash_screen.cancel_button.hide()
