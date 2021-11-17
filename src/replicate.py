@@ -110,20 +110,17 @@ class Replica:
         fsrc_read = fsrc.read
         fdst_write = fdst.write
 
-        # copied = 0
         while True:
             buf = fsrc_read(length)
             if not buf:
                 break
             fdst_write(buf)
-            # copied += len(buf)
             callback(flash_screen)
 
     def _copyfileobj_readinto(self, fsrc, fdst, flash_screen, callback, length=1024 * 1024 * 10):
         fsrc_readinto = fsrc.readinto
         fdst_write = fdst.write
 
-        # copied = 0
         with memoryview(bytearray(length)) as mv:
             while True:
                 n = fsrc_readinto(mv)
@@ -134,7 +131,6 @@ class Replica:
                         fdst.write(smv)
                 else:
                     fdst_write(mv)
-                # copied += n
                 callback(flash_screen)
 
     def get_folder_size(self, folder):
