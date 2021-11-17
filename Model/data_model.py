@@ -1,3 +1,6 @@
+from os.path import join
+
+
 class Data:
 
     def __init__(self):
@@ -21,6 +24,9 @@ class Data:
         self.__drive_name = drive_name
 
     def set_drive_path(self, drive_path):
+        if drive_path is not None:
+            self.__drive_path = join(drive_path, "WINDOWS")
+            return
         self.__drive_path = drive_path
 
     def set_drive_device(self, drive_device):
