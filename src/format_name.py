@@ -13,10 +13,17 @@ class Format:
 
         return label_string
 
-    def format_filepath(self, filepath: str):
-        if filepath is not None or filepath != "" or filepath != " ":
+    def format_filepath(self, file_path: str):
+        if file_path is not None and file_path != "" and file_path != " ":
             pattern = r"(/.*/)(.*\.iso$)"
-            file = split(pattern, filepath)
+            file = split(pattern, file_path)
             return file[1], file[2]
 
         return None, None
+
+    def format_drive_path(self, drive_path: str):
+        if drive_path is not None and drive_path != "" and drive_path != " ":
+            pattern = r"(.*/)\w*"
+            return split(pattern, drive_path)[1]
+
+        return None
