@@ -330,7 +330,7 @@ font-size: 26px;</string>
 }</string>
    </property>
    <property name="text">
-    <string>For any queries contact me through https://naman-jain.ml/contact.html</string>
+    <string>For any queries or any information you can share me by clicking here !!</string>
    </property>
    <property name="scaledContents">
     <bool>false</bool>
@@ -339,9 +339,6 @@ font-size: 26px;</string>
     <set>Qt::AlignCenter</set>
    </property>
    <property name="wordWrap">
-    <bool>true</bool>
-   </property>
-   <property name="openExternalLinks">
     <bool>true</bool>
    </property>
    <property name="textInteractionFlags">
@@ -400,6 +397,57 @@ QPushButton:pressed{
    </property>
    <property name="checked">
     <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="query_link_label">
+   <property name="geometry">
+    <rect>
+     <x>697</x>
+     <y>500</y>
+     <width>114</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>114</width>
+     <height>30</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>114</width>
+     <height>30</height>
+    </size>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::PreventContextMenu</enum>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel{
+	color: rgb(0, 120, 212);
+	font-size: 20px;
+	selection-color: rgb(255, 255, 255);
+	selection-background-color: rgb(0, 120, 212);
+}</string>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://naman-jain.ml/contact.html&quot;&gt;&lt;span style=&quot; text-decoration: none; color:rgb(0, 120, 212);&quot;&gt;clicking here&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+   <property name="openExternalLinks">
+    <bool>true</bool>
+   </property>
+   <property name="textInteractionFlags">
+    <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse</set>
    </property>
   </widget>
  </widget>
