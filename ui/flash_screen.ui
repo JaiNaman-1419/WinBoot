@@ -330,7 +330,7 @@ font-size: 26px;</string>
 }</string>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:15pt;&quot;&gt;For any queries or any information you can share me by &lt;/span&gt;&lt;a href=&quot;https://naman-jain.ml/contact.html&quot;&gt;&lt;span style=&quot; text-decoration: none; color:rgb(0, 120, 212);&quot;&gt;clicking here&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:15pt;&quot;&gt;For any queries or any information, you can share me by visiting &lt;/span&gt;&lt;a href=&quot;https://naman-jain.ml/contact.html&quot;&gt;&lt;span style=&quot; text-decoration: none; color:rgb(0, 120, 212);&quot;&gt;https://naman-jain.ml/contact.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="scaledContents">
     <bool>false</bool>
@@ -345,7 +345,7 @@ font-size: 26px;</string>
     <bool>true</bool>
    </property>
    <property name="textInteractionFlags">
-    <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse</set>
+    <set>Qt::TextBrowserInteraction</set>
    </property>
   </widget>
   <widget class="QPushButton" name="completed_button">
