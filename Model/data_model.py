@@ -10,7 +10,7 @@ class Data:
         self.__drive_name = None
         self.__drive_path = None
         self.__drive_device = None
-        self.__iso_mount_point = "/media/Windows/"
+        self.__iso_mount_point = "/Windows/"
 
     # Setters of Data Model
 
