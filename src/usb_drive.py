@@ -27,7 +27,7 @@ class DriveProperties:
 
         disk_number = 0
         try:
-            device_model_list = check_output(["pkexec", "fdisk", "-l"]).decode('utf-8').split('\n')
+            device_model_list = check_output(["fdisk", "-l"]).decode('utf-8').split('\n')
         except Exception:
             return False
 
