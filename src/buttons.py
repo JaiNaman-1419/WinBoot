@@ -32,7 +32,7 @@ class Buttons:
         alert.show()
 
     def add_iso_file(self, window, data):
-        file = QFileDialog.getOpenFileName(window, "Select .iso file", filter="ISO File(*.iso)")[0]
+        file = QFileDialog.getOpenFileName(window, "Select .iso file", directory="/", filter="ISO File(*.iso)")[0]
         if file == '' or file is None:
             self.__show_alert_box("Please select Windows iso file!")
             return
