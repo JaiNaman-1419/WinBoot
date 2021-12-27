@@ -32,8 +32,8 @@ class FlashUSB:
                 self.__dir = True
             return True
 
-        except Exception as e:
-            self.__show_alert_box("Something went wrong!!\n[Line number: 38]")
+        except Exception:
+            self.__show_alert_box("Error occurred while creating directory!!\n[Flash_USB, Line number: 36]")
             return False
 
     def __remove_directory(self):
@@ -43,7 +43,7 @@ class FlashUSB:
     def mount_iso_file(self, flash_screen):
         if not self.__create_directory(self.__data.get_iso_mount_point()):
             # TODO change message of alert box!
-            self.__show_alert_box("Something went wrong!!\n[Line number: 42]")
+            self.__show_alert_box("Error occurred while mounting iso file!!\n[Flash_USB, Line Number: 46]")
             exit()
         check_output(["mount", join(self.__data.get_file_path(), self.__data.get_file_name()),
                       f"{self.__data.get_iso_mount_point()}"])
@@ -53,17 +53,17 @@ class FlashUSB:
     def __unmount_iso_file(self):
         try:
             check_output(["umount", f"{self.__data.get_iso_mount_point()}"])
-        except Exception as e:
+        except Exception:
             # TODO change message of alert box!
-            self.__show_alert_box("Something went wrong!!\n[Line number: 49]")
+            self.__show_alert_box("Error occurred while unmounting iso file!!\n[Flash_USB, Line number: 58]")
             exit()
 
         try:
             if exists(self.__data.get_iso_mount_point()):
                 rmdir(self.__data.get_iso_mount_point())
-        except Exception as e:
+        except Exception:
             # TODO change message of alert box!
-            self.__show_alert_box("Something went wrong!!\n[Line number: 57]")
+            self.__show_alert_box("Error occurred while removing mounted directory!!\n[Flash_USB, Line number: 66]")
             exit()
 
     def convert_wim_to_swm(self, flash_screen):
@@ -74,9 +74,9 @@ class FlashUSB:
                           "/media/install.swm", "4000"])
             flash_screen.flash_bar.setFormat('%.02f%%' % 10.00)
             flash_screen.flash_bar.setValue(10.00)
-        except Exception as e:
+        except Exception:
             # TODO change message of alert box!
-            self.__show_alert_box("Something went wrong!!\n[Line number: 67]")
+            self.__show_alert_box("Error occurred while converting wim to swm!!\n[Flash_USB, Line number: 79]")
             exit()
 
     def __calculate_copied_size(self):
@@ -132,8 +132,8 @@ class FlashUSB:
             replica.copyfileobj(fsrc=fsrc, fdst=fdst, flash_screen=flash_screen, callback=self.__update_progress_bar)
             try:
                 remove(src)
-            except Exception as e:
-                self.__show_alert_box("Something went wrong\n[Line number: 120]")
+            except Exception:
+                self.__show_alert_box("Error occurred while copying swm file!!\n[Flash_USB, Line number: 120]")
 
         del replica
 
