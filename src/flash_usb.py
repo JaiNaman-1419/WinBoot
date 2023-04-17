@@ -45,8 +45,13 @@ class FlashUSB:
             # TODO change message of alert box!
             self.__show_alert_box("Error occurred while mounting iso file!!\n[Flash_USB, Line Number: 46]")
             exit()
-        check_output(["mount", join(self.__data.get_file_path(), self.__data.get_file_name()),
-                      f"{self.__data.get_iso_mount_point()}"])
+        try:
+            print(self.__data.get_file_path(), self.__data.get_file_name(), self.__data.get_iso_mount_point())
+            check_output(["mount", join(self.__data.get_file_path(), self.__data.get_file_name()),
+                          f"{self.__data.get_iso_mount_point()}"])
+        except Exception as e:
+            self.__show_alert_box("Error occurred while mounting iso file!!\n[Flash_USB, Line Number: 49]")
+
         flash_screen.flash_bar.setFormat('%.02f%%' % 8.00)
         flash_screen.flash_bar.setValue(8.00)
 
@@ -76,7 +81,7 @@ class FlashUSB:
             flash_screen.flash_bar.setValue(10.00)
         except Exception:
             # TODO change message of alert box!
-            self.__show_alert_box("Error occurred while converting wim to swm!!\n[Flash_USB, Line number: 79]")
+            self.__show_alert_box(message="Error occurred while converting wim to swm!!\n[Flash_USB, Line number: 79]")
             exit()
 
     def __calculate_copied_size(self):
@@ -146,10 +151,18 @@ class FlashUSB:
         # check_output(["sudo", "rmdir", self.__data.get_drive_path()])
 
     def start_flash(self, flash_screen):
+        print("Started Copying items to USB Drive.")
         self.__copy_items_to_usb(flash_screen)
+        print("Completed Copying items to USB Drive.")
+        print("Started Copying swm file to USB Drive.")
         self.__copy_swm_file_to_usb(flash_screen)
+        print("Completed Copying swm file to USB Drive.")
+        print("Started unmounting iso file.")
         self.__unmount_iso_file()
+        print("Completed unmounting iso file.")
+        print("Started unmounting USB Drive.")
         self.__unmount_formatted_usb_drive(flash_screen)
+        print("Completed unmounting USB Drive.")
         flash_screen.flash_bar.setFormat('%.02f%%' % 100.00)
         flash_screen.flash_bar.setValue(100.00)
         flash_screen.cancel_button.hide()
