@@ -169,9 +169,15 @@ class Buttons:
     def __start_usb_flash(self, data, flash_screen):
         usb_format = FormatUSB(data)
         usb_flash = FlashUSB(data, self)
-        usb_format.format_usb_drive(flash_screen)
+        # print("Started formatting USB Drive.")
+        # usb_format.format_usb_drive(flash_screen)
+        # print("Completed formatting USB Drive.")
+        print("Started mounting USB Drive.")
         usb_flash.mount_iso_file(flash_screen)
+        print("Completed mounting USB Drive.")
+        print("Converting wim file to USB Drive.")
         usb_flash.convert_wim_to_swm(flash_screen)
+        print("Completed wim file to USB Drive.")
         usb_flash.start_flash(flash_screen)
 
     def cancel_flash_button(self):
