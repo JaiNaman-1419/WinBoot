@@ -105,3 +105,4 @@ if __name__ == '__main__':
         alert.show()
 
     exit(application.exec())
+# Error in converting wim file to swm.
